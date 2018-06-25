@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "master/empty.html" %}
+<head>
+    {% block head %}
+        {{ super() }}
+    {% endblock %}
+    {% block css %}
+        {{ super() }}
+        <link href="{{ url_for('static',filename='master/css/dxads/custom.css') }}" rel="stylesheet" type="text/css">
+    {% endblock %}
+</head>
+<body class="skin-black">
+    {% block body %}
+        {{ super() }}
+    {% endblock %}
+    {% block content %}
+        <aside class="right-side">
+            <section class="content-header">
+                <h1 class="panel-title">List</h1>
+                <ol class="breadcrumb">
+                    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                    <li class="active">Book</li>
+                </ol>
+            </section>
+            <section class="content">
+                {% for r in row %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box  box-success">
+                        <div class="box-header">
+                            <h3 class="box-title"><i class="fa fa-user">&nbsp;{{ r[1] }}</i></h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-success btn-sm" data-widget="collapse"><i class="fa fa-chevron-up"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                                <div id="user-profile-2" class="user-profile">
+
+                    <div class="tab-content no-border padding-24">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-3 center">
+                                <span class="profile-picture">
+                                    <img class="editable img-responsive" width="300px" height="300px" halt="dp" id="avatar2" src="{{ url_for('static',filename='master/profile/book/'+r[2]) }}">
+                                </span>
+                                <div class="space space-4"></div>
+                                <form>
+                                    <input type="hidden" name="bid" value="{{ r[0] }}">
+                                <button class="btn btn-sm btn-block btn-success" formmethod="POST" formaction="{{ url_for('booklist') }}">
+                                    <i class="ace-icon fa fa-edit bigger-120"></i>
+                                    <span class="bigger-110">Edit Profile</span>
+                                </button>
+                                <button class="btn btn-sm btn-block btn-primary" formaction="{{ url_for('deletebook')}}" formmethod="post">
+                                    <i class="ace-icon fa fa-trash-o bigger-110"></i>
+                                    <span class="bigger-110">Delete Profile</span>
+                                </button>
+                                <button class="btn btn-sm btn-block btn-primary" formaction="{{ url_for('activatebook') }}" formmethod="post">
+                                    <span class="bigger-110">Activate Faculty</span>
+                                </button>
+                                </form>
+                            </div><!-- /.col -->
+                            <div class="col-xs-12 col-sm-9">
+                                <div class="profile-user-info">
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> Book Name </div>
+                                        <div class="profile-info-value">
+                                            <i class="fa fa-book light-orange bigger-110"></i>
+                                            <span>{{ r[1] }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name">Course Name</div>
+                                        <div class="profile-info-value">
+                                            <i class="fa fa-book light-orange bigger-110"></i>
+                                            <span>{{ r[11] }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name">Publication</div>
+                                        <div class="profile-info-value">
+                                            <i class="fa fa-print light-orange bigger-110"></i>
+                                            <span>{{ r[3] }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name">Author-1</div>
+                                        <div class="profile-info-value">
+                                            <i class="fa fa-user light-orange bigger-110"></i>
+                                            <span>{{ r[4] }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name">Author-2</div>
+                                        <div class="profile-info-value">
+                                            <i class="fa fa-user-md light-orange bigger-110"></i>
+                                            <span>{{ r[5] }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name">Quantity</div>
+                                        <div class="profile-info-value">
+                                            <i class="fa fa-check-circle-o light-orange bigger-110"></i>
+                                            <span>{{ r[6] }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name">Remaining Book</div>
+                                        <div class="profile-info-value">
+                                            <i class="fa fa-check-circle-o light-orange bigger-110"></i>
+                                            <span>{{ r[-1] }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name">Publication Year</div>
+                                        <div class="profile-info-value">
+                                            <i class="fa fa-calendar light-orange bigger-110"></i>
+                                            <span>{{ r[7] }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name">Price</div>
+                                        <div class="profile-info-value">
+                                            <i class="fa fa-rupee light-orange bigger-110"></i>
+                                            <span>{{ r[8] }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name">Status</div>
+                                        <div class="profile-info-value">
+                                            <i class="fa fa-question-circle light-orange bigger-110"></i>
+                                            <span>{{ r[9] }}</span>
+                                        </div>
+                                    </div>
+
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+                        <div class="space-20"></div>
+                        <div class="row"></div>
+                        </div>
+                    </div></div>
+                        </div>
+                    </div>
+                    </div>
+
+                </div>
+                {% endfor %}
+            </section>
+        </aside>
+    {% endblock %}
+    {% block script %}
+        {{ super() }}
+    <script src="{{ url_for('static',filename='master/js/plugins/input-mask/jquery.inputmask.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static',filename='master/js/plugins/input-mask/jquery.inputmask.date.extensions.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static',filename='master/js/plugins/input-mask/jquery.inputmask.extensions.js') }}" type="text/javascript"></script>
+
+    {% endblock %}
+</body>
+</html>

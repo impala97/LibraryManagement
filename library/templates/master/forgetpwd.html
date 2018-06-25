@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html class="bg-black">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+        <meta name="description" content="ITMCS | PSVM | LOGICPLUS">
+        <meta name="author" content="mehtasmit44@gmail.com">
+
+        <link rel="shortcut icon" href="{{ url_for('static',filename='master/img/favicon/5.png') }}" type="image/png"/>
+        <title>
+            {{ title }}
+        </title>
+        <link href="{{ url_for('static',filename='master/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ url_for('static',filename='master/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ url_for('static',filename='master/css/AdminLTE.css') }}" rel="stylesheet" type="text/css" />
+        <script src="{{ url_for('static',filename='master/js/html5shiv.js') }}"></script>
+        <script src="{{ url_for('static',filename='master/js/respond.min.js') }}"></script>
+    </head>
+    <body class="bg-black">
+        <div class="form-box" id="fpwd-box">
+            <div class="header">Forget Password</div>
+            <form id="fpwd">
+                <div class="body bg-gray">
+                    <div class="form-group">
+                        <input type="email" name="email_txt" class="form-control" placeholder="Enter Email Address"/>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" class="btn bg-olive btn-block" id="fpwd_btn">Send OTP</button>
+                    </div>
+                </div>
+            </form>
+                <div class="footer">
+                    <a href="{{ url_for('rtlogin') }}" class="text-center">Go Back To Login</a><br/>
+                    <label class="control-label text-red" id="fpwd_err_lbl"></label>
+                </div>
+        </div>
+
+        <div class="form-box" id="otp-box">
+            <div class="header">Submit  OTP</div>
+            <form id="otp">
+                <div class="body bg-gray">
+                    <div class="form-group">
+                        <input type="text" name="otp_txt" id="otp_txt" class="form-control" placeholder="Enter One Time Password"/>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" class="btn bg-olive btn-block" id="otp_btn">Submit OTP</button>
+                    </div>
+                </div>
+            </form>
+            <div class="footer">
+                <label id="timer" class="control-label text-red"></label><br/>
+                <label class="control-label text-red" id="otp_err_lbl"></label>
+            </div>
+
+        </div>
+
+        <div class="form-box" id="changepwd-box">
+            <div class="header">Change Password</div>
+            <form id="changepwd">
+                <input type="hidden" id="user_id" name="user_id" value="">
+                <div class="body bg-gray">
+                    <div class="form-group">
+                        <input type="password" name="pwd_txt" class="form-control" placeholder="Enter Password"/>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" name="cpwd_txt" class="form-control" placeholder="Confirm Password"/>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn bg-olive btn-block" id="changepwd_btn">Change Password</button>
+                    </div>
+                </div>
+            </form>
+            <div class="footer">
+                <label class="control-label text-red" id="changepwd_err_lbl"></label>
+            </div>
+        </div>
+       <!-- jQuery 2.0.2 -->
+        <script src="{{ url_for('static',filename='master/js/plugins/jquery.min.js') }}" />
+        <!-- Bootstrap -->
+        <script src="{{ url_for('static',filename='master/js/plugins/bootstrap.min.js') }}" type="text/javascript"></script>
+        <script type="text/javascript">
+            //event.preventDefault();
+            $(function () {
+                $('#otp-box').hide();
+                $('#changepwd-box').hide();
+                event.preventDefault();
+                $('#fpwd_btn').click(function () {
+                    $(this).prop('disabled', true);
+                    $.ajax({
+                        url: "{{ url_for('rtfpwd') }}",
+                        type: 'POST',
+                        data: $('#fpwd').serialize(),
+                        success: function (response) {
+                            $('#fpwd_btn').prop('disabled', false);
+                           console.log(response.error);
+                           if(response.error === 'False'){
+                               $('#fpwd-box').hide();
+                               $('#otp-box').show();
+                               $('#user_id').val('' + response.user_id);
+                               $('#otp_err_lbl').text(response.errstr);
+                               timer();
+                           }
+                           else{
+                               $('#fpwd_err_lbl').text(response.errstr);
+                               console.log(response.errstr);
+                           }
+                        },
+                        error: function (error) {
+                           console.log(error);
+                        }
+                   });
+                });
+
+                $('#otp_btn').click(function () {
+                    $.ajax({
+                        url: "{{ url_for('otp') }}",
+                        type: 'POST',
+                        data: {'otp_txt':$('#otp_txt').val(), 'user_id':$('#user_id').val()},
+                        success: function (response) {
+                            if (response.error === 'False')
+                            {
+                                $('#otp-box').hide();
+                                $('#changepwd-box').show()
+                                $('#changepwd_err_lbl').text(response.errstr);
+                            }
+                            else
+                            {
+                                $('#otp_err_lbl').text(response.errstr);
+                            }
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
+
+                    $('#changepwd_btn').click(function () {
+                        $.ajax({
+                            url: "{{ url_for('changepwd') }}",
+                            type: 'POST',
+                            data: $('#changepwd').serialize(),
+                            success: function (response) {
+                                if(response.error === 'False')
+                                {
+                                    window.location = response.url;
+                                }
+                                else
+                                {
+                                    $('#changepwd_err_lbl').text(response.errstr);
+                                }
+                            }
+                        });
+                    });
+                });
+                function timer() {
+                    document.getElementById('timer').innerHTML = 05 +":" + 00;
+                    var set;
+                    startTimer();
+                    function startTimer() {
+                        var presentTime = document.getElementById('timer').innerHTML;
+                        var timeArray = presentTime.split(/[:]+/);
+                        var m = timeArray[0];
+                        var s = checkSecond((timeArray[1] - 1));
+                        if(s==59){
+                            m = m-1;
+                        }
+                        if(m<0){
+                            document.getElementById("otp_err_lbl").innerHTML = "Time's up!!";
+                            clearTimeout(set);
+                            return true;
+                        }
+                        else {
+                            document.getElementById('timer').innerHTML = m + ":" + s;
+                            set = setTimeout(startTimer, 1000);
+                        }
+
+                    }
+
+                    function checkSecond(sec) {
+                      if (sec < 10 && sec >= 0) {sec = "0" + sec}; // add zero in front of numbers < 10
+                      if (sec < 0) {sec = "59"};
+                      return sec;
+                    }
+
+                    function checkMinute(min) {
+                        if (min >=0 && min < 10) {min = "0" + min};
+                    }
+
+                }
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,100 @@
+Table Name :- library.user
+fields :-
+id
+username
+password
+email
+phone
+last_login
+live
+last_otp_id
+active
+
+query:-
+create table library.user(id serial primary key,username varchar(20) unique,password varchar(20) not null,email email not null,phone phone not null,last_login timestamp without time zone not null,live boolean default false,last_otp_id integer unique default 0,active boolean default false);
+
+CREATE DOMAIN email AS citext CONSTRAINT email_check CHECK ((VALUE ~ '^[a-zA-Z0-9.!#$%&''*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zAZ0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$'::citext));
+
+CREATE DOMAIN phone AS citext CONSTRAINT phone_check CHECK ((VALUE ~ '^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$'::citext));
+
+
+Table Name :- OTP
+fields :-
+id
+user_id
+otp
+expires_on
+active
+
+query:-
+create table library.otp(id serial primary key,user_id integer not null references library.user(id) not null,otp varchar(6) not null, expires_on timestamp without time zone not null default now() + interval '5 minutes', active boolean default true not null);
+
+Table Name :- Book
+fields :-
+id
+name
+picture
+publication
+author1
+author2
+year
+quntity
+price
+
+
+query:-
+create table library.book(id serial primary key,name varchar(20) not null,picture varchar(30) not null default 'default-book.jpg',publication varchar(30) not null,author1 varchar(30) not null,author2 varchar(30),quantity smallint not null,year smallint not null,price smallint not null);
+
+
+Table Name :- Student
+fields :-
+id
+username
+password
+fname
+lname
+email
+phone
+gender
+dob
+address
+picture
+last_login
+live
+last_otp_id
+register_on
+active
+
+query:-
+create table library.student(id serial primary key,username varchar(20) unique,password varchar(20) not null,fname varchar(20) not null,lname varchar(20) not null,email email not null,phone phone not null,gender boolean not null,dob date not null,address varchar(200) not null,picture varchar(100) not null default 'profile-pic.jpg',last_login timestamp without time zone default now() not null,live boolean default false,last_otp_id integer not null default 0,register_on timestamp without time zone not null default now(),active boolean default false);
+
+
+Table Name :- Course
+fields :-
+id
+course_name
+branch
+total_books
+active
+
+query :-
+	create table library.course(id serial primary key,cname varchar(50) unique,branch varchar(50) not null,total_books smallint not null default 0,active boolean default '1');
+
+Table Name :- book_occupied
+fields :-
+id
+bid
+sid
+returned
+purchsed_date
+return_date
+auto_renew
+active
+
+query:-
+create table library.book_occuppied(id serial primary key,bid smallint not null references library.book(id),sid smallint not null references library.student(id),returned boolean not null default '0',purchsed_date timestamp without time zone default now() not null,return_date timestamp without time zone default now() + interval '15 day',auto_renew boolean not null default '0',active boolean not null default '1');
+
+
+/home/srmehta/logicplus_mvc/logicplus/static/master/profile/1_201802151910.jpg
+
+

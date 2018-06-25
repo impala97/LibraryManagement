@@ -1,0 +1,22 @@
+backend credetials
+
+username :- admin
+password :- master
+
+frontend credentials
+username :- sr
+password :- sr
+
+or you can register it
+
+1.)here is database file named library.pgsql made in PostgresSQL database
+	database name must be library
+2.)I had also attached requirement.txt file so that you can install all necessory packages
+3.)frontend is consolebased so you have to run library/frontend/main.py made in python3
+
+you can also see snapshots of output.
+if any problem regarding run this project please contact me.
+
+Note :- I belive that there is few bugs in my project but i did best in given time.
+
+Thank you.

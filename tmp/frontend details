@@ -1,0 +1,24 @@
+FrontEnd
+
+1.Student Register
+2.Student Login
+3.Reset Password
+4.exit
+
+Student Login
+1.List of all book
+2.Occupied book | occupy book
+3.return book
+4.renew book
+5.change password
+6.logout
+
+book table details
+dp_img
+name_txt
+publication_txt
+author1_txt
+author2_txt
+quantity_txt
+year_txt
+price_txt
